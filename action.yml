@@ -24,7 +24,7 @@ inputs:
     required: false
     default: 'pnpm-lock.yaml'
   package_json_file:
-    description: File path to the package.json to read "packageManager" configuration. This path must be relative to the repository root (GITHUB_WORKSPACE).
+    description: File path to the package.json, package.yaml or package.json5 to read "packageManager" or "devEngines.packageManager" configuration. This path must be relative to the repository root (GITHUB_WORKSPACE).
     required: false
     default: 'package.json'
   standalone:

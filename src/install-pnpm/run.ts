@@ -128,6 +128,17 @@ export async function runSelfInstaller(inputs: Inputs): Promise<SelfInstallerRes
   return { exitCode: 0, binDest: existsSync(updatedBinDir) ? updatedBinDir : pnpmHome }
 }
 
+function parseManifest(fileName: string, content: string) {
+  switch (path.extname(fileName)) {
+    case '.yaml':
+      return parseYaml(content, { merge: true })
+    case '.json5':
+      return JSON5.parse(content)
+    default:
+      return JSON.parse(content)
+  }
+}
+
 function readTargetVersion(opts: {
   readonly version?: string | undefined
   readonly packageJsonFile: string
@@ -141,11 +152,7 @@ function readTargetVersion(opts: {
   if (GITHUB_WORKSPACE) {
     try {
       const content = readFileSync(path.join(GITHUB_WORKSPACE, packageJsonFile), 'utf8');
-      const manifest = packageJsonFile.endsWith(".yaml")
-        ? parseYaml(content, { merge: true })
-        : packageJsonFile.endsWith(".json5")
-        ? JSON5.parse(content)
-        : JSON.parse(content)
+      const manifest = parseManifest(packageJsonFile, content)
       packageManager = manifest.packageManager
       devEngines = manifest.devEngines
     } catch (error: unknown) {

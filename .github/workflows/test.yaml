@@ -110,6 +110,10 @@ jobs:
           - label: 'packageManager pnpm@10.33.0'
             manifest: '{"packageManager":"pnpm@10.33.0"}'
             version: '10.33.0'
+          - label: 'packageManager in package.json5'
+            manifest: '{/* JSON5 */ packageManager: "pnpm@10.33.0",}'
+            manifest_file: 'package.json5'
+            version: '10.33.0'
           - label: 'devEngines onFail=download, exact'
             manifest: '{"devEngines":{"packageManager":{"name":"pnpm","version":"9.15.5","onFail":"download"}}}'
             version: '9.15.5'
@@ -137,13 +141,14 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Set up package.json
-        run: echo '${{ matrix.manifest }}' > package.json
+        run: echo '${{ matrix.manifest }}' > '${{ matrix.manifest_file || 'package.json' }}'
         shell: bash
 
       - name: Run the action
         uses: ./
         with:
           version: ${{ matrix.explicit_version }}
+          package_json_file: ${{ matrix.manifest_file || 'package.json' }}
 
       - name: 'Test: pnpm reports the pinned version'
         if: ${{ !matrix.expect_pm_on_fail_unset }}

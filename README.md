@@ -104,7 +104,7 @@ If `run_install` is a YAML string representation of either an object or an array
 
 ### `package_json_file`
 
-**Optional** (_type:_ `string`, _default:_ `package.json`) File path to the `package.json`/[`package.yaml`/`package.json5`](https://github.com/pnpm/pnpm/pull/1799) to read `packageManager` or `devEngines.packageManager` configuration.
+**Optional** (_type:_ `string`, _default:_ `package.json`) File path to the [`package.json`/`package.yaml`/`package.json5`](https://pnpm.io/package_json) to read `packageManager` or `devEngines.packageManager` configuration.
 
 ### `standalone`
 
